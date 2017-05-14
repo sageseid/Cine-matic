@@ -63,7 +63,6 @@ public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdap
             MovieResponse movie = mMovieList.get(itemPosition);
             Intent MovieDetail = new Intent(mContext, MovieDetailActivity.class);
                MovieDetail.putExtra("Details",movie);
-            //   MovieDetail.putExtras("Details", movie);
             mContext.startActivity(MovieDetail);
 
 

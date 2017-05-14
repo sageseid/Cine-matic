@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +32,7 @@ import com.noel201296gmail.cine_matic.Adapter.ReviewRecyclerAdapter;
 import com.noel201296gmail.cine_matic.Model.MovieResponse;
 import com.noel201296gmail.cine_matic.Model.ReviewResponse;
 import com.noel201296gmail.cine_matic.Network.NetworkController;
+
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -76,8 +78,8 @@ public class MovieDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_details);
-        Intent intent = getIntent();
-        MovieResponse films = intent.getParcelableExtra("Details");
+        final Intent intent = getIntent();
+        final MovieResponse films = intent.getParcelableExtra("Details");
 
         mCoordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinate_layout);
         mCollapsingToolBar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
@@ -96,9 +98,22 @@ public class MovieDetailActivity extends AppCompatActivity {
         mTvTitle.setText(films.getOriginalLanguage());
         mRecyclerView= (RecyclerView) findViewById(R.id.my_recycler_view_1);
 
+        mButtonTrailer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent Trailer = new Intent(MovieDetailActivity.this,TrailerActivity.class);
+               Trailer.putExtra("id",films.getId().toString());
+                startActivity(Trailer);
+            }
+        });
+
+
+
      //   mTvReleaseDate.setText(finalDateStr);
         mTvRating.setText(String.valueOf(films.getVoteAverage()));
         mTvOverview.setText(films.getOverview());
+
+
 
         Picasso.with(mContext)
                 .load(films.getBackdropPath())
