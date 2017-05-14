@@ -1,6 +1,7 @@
 package com.noel201296gmail.cine_matic;
 
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -29,6 +30,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
 import com.noel201296gmail.cine_matic.Adapter.ReviewRecyclerAdapter;
+import com.noel201296gmail.cine_matic.Data.MovieContract;
 import com.noel201296gmail.cine_matic.Model.MovieResponse;
 import com.noel201296gmail.cine_matic.Model.ReviewResponse;
 import com.noel201296gmail.cine_matic.Network.NetworkController;
@@ -104,6 +106,33 @@ public class MovieDetailActivity extends AppCompatActivity {
                 Intent Trailer = new Intent(MovieDetailActivity.this,TrailerActivity.class);
                Trailer.putExtra("id",films.getId().toString());
                 startActivity(Trailer);
+            }
+        });
+
+
+        mButtonFavorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // Insert new task data via a ContentResolver
+                // Create new empty ContentValues object
+                ContentValues contentValues = new ContentValues();
+                // Put the task description and selected mPriority into the ContentValues
+                contentValues.put(MovieContract.MovieEntry.COLUMN_PIC, films.getPosterPath());
+                contentValues.put(MovieContract.MovieEntry.COLUMN_NAME, films.getTitle());
+                contentValues.put(MovieContract.MovieEntry.COLUMN_RATING, films.getVoteAverage().intValue());
+                // Insert the content values via a ContentResolver
+                Uri uri = getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, contentValues);
+
+                // Display the URI that's returned with a Toast
+                // [Hint] Don't forget to call finish() to return to MainActivity after this insert is complete
+                if(uri != null) {
+                    Toast.makeText(getBaseContext(), uri.toString(), Toast.LENGTH_LONG).show();
+                }
+
+                // Finish activity (this returns back to MainActivity)
+                finish();
+
             }
         });
 

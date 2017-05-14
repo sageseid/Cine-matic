@@ -1,17 +1,15 @@
 package com.noel201296gmail.cine_matic;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.android.volley.NetworkError;
@@ -25,7 +23,9 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.noel201296gmail.cine_matic.Adapter.MovieRecyclerAdapter;
+import com.noel201296gmail.cine_matic.Adapter.TrailerRecyclerAdapter;
 import com.noel201296gmail.cine_matic.Model.MovieResponse;
+import com.noel201296gmail.cine_matic.Model.TrailerResponse;
 import com.noel201296gmail.cine_matic.Network.NetworkController;
 
 import org.json.JSONArray;
@@ -35,46 +35,56 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
+/**
+ * Created by OMOSEFE NOEL OBASEKI on 12/05/2017.
+ */
+public class TrailerActivity extends AppCompatActivity {
 
 
     //Base Url for TMDB
     private static final String API_BASE_URL = "http://api.themoviedb.org/3";
     //Key to access TMDB
     private static final String API_KEY = "b7a6da7f6401f0bad741c3d311b15234";
+    // Base Url for Youtube
+    public static String BASE_URL_VIDEO = "https://www.youtube.com/watch?v=";
 
-    private String SortOrder;
+    Context mContext;
 
 
+    List<TrailerResponse> trailersList = new ArrayList<TrailerResponse>();
     RequestQueue queue;
-    RecyclerView recyclerView;
-    List<MovieResponse> feedsList = new ArrayList<MovieResponse>();
-    MovieRecyclerAdapter adapter;
+    RecyclerView recyclerView_2;
+    TrailerRecyclerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_main);
-        recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
-        adapter = new MovieRecyclerAdapter(this, feedsList);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-        recyclerView.setAdapter(adapter);
+        setContentView(R.layout.fragment_trailer);
+
+        Intent getTrailerId = getIntent();
+        String ID_GET = getTrailerId.getStringExtra("id");
+
+
+        recyclerView_2 = (RecyclerView) findViewById(R.id.my_recycler_view_3);
+        adapter = new TrailerRecyclerAdapter(this, trailersList);
+        recyclerView_2.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView_2.setAdapter(adapter);
         queue = NetworkController.getInstance(this).getRequestQueue();
-        final ProgressDialog loading = ProgressDialog.show(this, "Loading Data", "Please wait...");
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-
-        Find_Order(sharedPreferences);
 
         Uri.Builder builder = Uri.parse(API_BASE_URL).buildUpon();
         builder.appendPath("movie").
-                appendPath(SortOrder).
+                appendPath(ID_GET).
+                appendPath("trailers").
                 appendQueryParameter("api_key", API_KEY);
-        String url = builder.build().toString();
+        String url_2 = builder.build().toString();
+
+
+        final ProgressDialog loading = ProgressDialog.show(this, "Loading Data", "Please wait...");
 
 
         JsonObjectRequest jsonRequest = new JsonObjectRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                (Request.Method.GET, url_2, null, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         //Dismissing progress dialog
@@ -83,20 +93,18 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
                         try {
 
-                            response.getInt("page");
-                            JSONArray jsonArray = response.getJSONArray("results");
+                            response.getInt("id");
+                            response.getJSONArray("quicktime");
+                            JSONArray jsonArray = response.getJSONArray("youtube");
                             Log.d("DEBUG", response.toString());
                             for (int i = 0; i < jsonArray.length(); i++) {
 
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-                                MovieResponse dataSet = new MovieResponse(jsonObject.getString("poster_path"),jsonObject.getBoolean("adult"),jsonObject.getString("overview"),
-                                        jsonObject.getString("release_date"),jsonObject.getJSONArray("genre_ids"),jsonObject.getInt("id"),jsonObject.getString("original_title"),
-                                        jsonObject.getString("original_language"),jsonObject.getString("title"),jsonObject.getString("backdrop_path"),jsonObject.getDouble("popularity"),
-                                        jsonObject.getInt("vote_count"),jsonObject.getBoolean("video"),jsonObject.getDouble("vote_average") );
+                                TrailerResponse dataSet = new TrailerResponse(jsonObject.getString("name"), jsonObject.getString("size"), jsonObject.getString("source"), jsonObject.getString("type"));
 
 
-                                feedsList.add(dataSet);
+                                trailersList.add(dataSet);
                                 adapter.notifyItemChanged(i);
 
 
@@ -134,44 +142,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     }
 
 
-    private String Find_Order(SharedPreferences sharedPreferences) {
-        SortOrder = sharedPreferences.getString(getString(R.string.sort_by_key), getString(R.string.sort_by_default));
-        return  SortOrder ;
-    }
 
-
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-
-        Find_Order(sharedPreferences);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-        switch (id) {
-
-            case R.id.action_settings:
-
-                Intent Tr = new Intent(this, SettingsActivity.class);
-                startActivity(Tr);
-            case R.id.action_favourite:
-                Intent Ir = new Intent(this, FavouriteActivity.class);
-                startActivity(Ir);
-
-                return true;
-        }
-
-
-        return super.onOptionsItemSelected(item);
-    }
 
 }
+
