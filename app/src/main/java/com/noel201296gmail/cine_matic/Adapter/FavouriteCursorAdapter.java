@@ -44,16 +44,12 @@ public class FavouriteCursorAdapter extends RecyclerView.Adapter<FavouriteCursor
         int descriptionIndex = mCursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_NAME);
         int picIndex = mCursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_PIC);
         mCursor.moveToPosition(position);
-        final int rating = mCursor.getInt(idIndexRating);
+         int rating = mCursor.getInt(idIndexRating);
         String description = mCursor.getString(descriptionIndex);
         int pic = mCursor.getInt(picIndex);
 
         holder.mTVTitle.setText(description);
-//        holder.mTVRating.setText(rating);
-    //    Picasso.with(mContext)
-      //          .load(pic)
-      //          .placeholder(R.color.colorAccent)
-        //        .into(holder.mIVThumbNail);
+        holder.mTVRating.setText(rating);
     }
 
     @Override

@@ -4,7 +4,7 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 <android.support.v7.widget.CardView
     android:id="@+id/card_view_1"
@@ -30,7 +30,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="@string/author"
+                android:text="@string/review"
                 android:id="@+id/textView"
                 android:textAlignment="center"
                 android:textColor="@color/colorPrimary"/>
@@ -40,7 +40,8 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Large Text"
-                android:id="@+id/AUTHOR"/>
+                android:id="@+id/AUTHOR"
+                android:layout_marginLeft="15dp"/>
         </LinearLayout>
 
         <TextView

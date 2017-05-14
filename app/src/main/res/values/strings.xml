@@ -4,6 +4,8 @@
     <string name="title_activity_movie_detail">MovieDetailActivity</string>
     <string name="title_activity_settings">Change movie\'s sort by</string>
 
+
+    <string name="review">Review</string>
     <string name="action_settings">Settings</string>
     <string name="action_favorite">Favourite</string>
     <string name="most_popular_movies">Most Popular</string>
