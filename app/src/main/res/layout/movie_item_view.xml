@@ -23,7 +23,8 @@
             android:layout_gravity="top|left"
             android:adjustViewBounds="true"
             android:contentDescription="@string/grid_movie_poster"
-            android:visibility="visible" />
+            android:visibility="visible"
+            android:src="@drawable/trailerplay"/>
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -1,15 +1,18 @@
 package com.noel201296gmail.cine_matic;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.MenuItem;
 
 import com.noel201296gmail.cine_matic.Adapter.FavouriteCursorAdapter;
 import com.noel201296gmail.cine_matic.Data.MovieContract;
@@ -18,15 +21,21 @@ import com.noel201296gmail.cine_matic.Data.MovieContract;
  * Created by OMOSEFE NOEL OBASEKI on 14/05/2017.
  */
 public class FavouriteActivity extends AppCompatActivity implements
-        LoaderManager.LoaderCallbacks<Cursor>{
+        LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int TASK_LOADER_ID = 0;
     private FavouriteCursorAdapter mAdapter;
     RecyclerView mRecyclerView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_main);
+
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         // Set the RecyclerView to its corresponding view
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
@@ -36,6 +45,7 @@ public class FavouriteActivity extends AppCompatActivity implements
         mRecyclerView.setAdapter(mAdapter);
         getSupportLoaderManager().initLoader(TASK_LOADER_ID, null, this);
     }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -43,6 +53,7 @@ public class FavouriteActivity extends AppCompatActivity implements
         // re-queries for all tasks
         getSupportLoaderManager().restartLoader(TASK_LOADER_ID, null, this);
     }
+
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         return new AsyncTaskLoader<Cursor>(this) {
@@ -100,5 +111,19 @@ public class FavouriteActivity extends AppCompatActivity implements
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mAdapter.swapCursor(null);
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                // app icon in action bar clicked; go home
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

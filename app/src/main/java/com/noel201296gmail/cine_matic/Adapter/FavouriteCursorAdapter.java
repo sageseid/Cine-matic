@@ -1,6 +1,7 @@
 package com.noel201296gmail.cine_matic.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import com.noel201296gmail.cine_matic.Data.MovieContract;
 import com.noel201296gmail.cine_matic.Model.MovieResponse;
+import com.noel201296gmail.cine_matic.MovieDetailActivity;
 import com.noel201296gmail.cine_matic.R;
 import com.squareup.picasso.Picasso;
 
@@ -44,12 +46,12 @@ public class FavouriteCursorAdapter extends RecyclerView.Adapter<FavouriteCursor
         int descriptionIndex = mCursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_NAME);
         int picIndex = mCursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_PIC);
         mCursor.moveToPosition(position);
-         int rating = mCursor.getInt(idIndexRating);
+         String rating = String.valueOf(mCursor.getInt(idIndexRating));
         String description = mCursor.getString(descriptionIndex);
-        int pic = mCursor.getInt(picIndex);
+
 
         holder.mTVTitle.setText(description);
-//        holder.mTVRating.setText(rating);
+        holder.mTVRating.setText(rating);
     }
 
     @Override
@@ -81,7 +83,6 @@ public class FavouriteCursorAdapter extends RecyclerView.Adapter<FavouriteCursor
 
         @Override
         public void onClick(View v) {
-
         }
     }
     public Cursor swapCursor(Cursor c) {
