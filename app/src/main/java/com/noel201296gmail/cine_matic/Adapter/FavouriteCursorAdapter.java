@@ -49,7 +49,7 @@ public class FavouriteCursorAdapter extends RecyclerView.Adapter<FavouriteCursor
         int pic = mCursor.getInt(picIndex);
 
         holder.mTVTitle.setText(description);
-        holder.mTVRating.setText(rating);
+//        holder.mTVRating.setText(rating);
     }
 
     @Override

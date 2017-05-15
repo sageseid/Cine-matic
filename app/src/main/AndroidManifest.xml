@@ -21,6 +21,7 @@
         </activity>
 
     <activity android:name=".SettingsActivity">
+
     </activity>
 
         <activity android:name=".MovieDetailActivity">
@@ -28,12 +29,15 @@
 
         <activity android:name=".TrailerActivity">
         </activity>
+
         <activity android:name=".FavouriteActivity">
         </activity>
+
         <provider
             android:name=".Data.MovieContentProvider"
             android:authorities="com.noel201296gmail.cine_matic"
             android:exported="false"/>
+
     </application>
 
 </manifest>

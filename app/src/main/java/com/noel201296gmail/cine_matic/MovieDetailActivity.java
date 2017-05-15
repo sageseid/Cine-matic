@@ -9,10 +9,13 @@ import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ShareCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -83,6 +86,12 @@ public class MovieDetailActivity extends AppCompatActivity {
         final Intent intent = getIntent();
         final MovieResponse films = intent.getParcelableExtra("Details");
 
+
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
         mCoordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinate_layout);
         mCollapsingToolBar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         mIvBackDrop = (ImageView) findViewById(R.id.iv_backdrop);
@@ -113,7 +122,6 @@ public class MovieDetailActivity extends AppCompatActivity {
         mButtonFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 // Insert new task data via a ContentResolver
                 // Create new empty ContentValues object
                 ContentValues contentValues = new ContentValues();
@@ -123,13 +131,11 @@ public class MovieDetailActivity extends AppCompatActivity {
                 contentValues.put(MovieContract.MovieEntry.COLUMN_RATING, films.getVoteAverage().intValue());
                 // Insert the content values via a ContentResolver
                 Uri uri = getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, contentValues);
-
                 // Display the URI that's returned with a Toast
                 // [Hint] Don't forget to call finish() to return to MainActivity after this insert is complete
                 if(uri != null) {
                     Toast.makeText(getBaseContext(), uri.toString(), Toast.LENGTH_LONG).show();
                 }
-
                 // Finish activity (this returns back to MainActivity)
                 finish();
 
@@ -137,6 +143,19 @@ public class MovieDetailActivity extends AppCompatActivity {
         });
 
 
+
+        mButtonShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String Title = films.getTitle();
+                String  story = films.getOverview();
+                String textThatYouWantToShare =
+                    "Check out this awesome movie "+"          "+Title+"         "+"Overview :"+story ;
+                shareText(textThatYouWantToShare);
+
+            }
+        });
 
      //   mTvReleaseDate.setText(finalDateStr);
         mTvRating.setText(String.valueOf(films.getVoteAverage()));
@@ -226,5 +245,31 @@ public class MovieDetailActivity extends AppCompatActivity {
                         });
         queue.add(jsonRequest);
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                // app icon in action bar clicked; go home
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                return true;
+                default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+    private void shareText(String textToShare) {
+
+        String mimeType = "text/plain";
+        String title = "Check out This Movie";
+
+        ShareCompat.IntentBuilder
+                .from(this)
+                .setType(mimeType)
+                .setChooserTitle(title)
+                .setText(textToShare)
+                .startChooser();
     }
 }
