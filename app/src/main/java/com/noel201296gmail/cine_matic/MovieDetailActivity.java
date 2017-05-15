@@ -44,8 +44,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by OMOSEFE NOEL OBASEKI on 08/05/2017.
@@ -108,6 +112,22 @@ public class MovieDetailActivity extends AppCompatActivity {
         mCollapsingToolBar.setTitle(films.getOriginalTitle());
         mTvTitle.setText(films.getOriginalLanguage());
         mRecyclerView= (RecyclerView) findViewById(R.id.my_recycler_view_1);
+
+
+        String sourceDateStr = films.getReleaseDate();
+        SimpleDateFormat sourceDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+
+        Date sourceDate = null;
+        try {
+            sourceDate = sourceDateFormat.parse(sourceDateStr);
+        } catch (ParseException e) {
+            Log.e("", e.getMessage());
+        }
+
+        SimpleDateFormat finalDateFormat = new SimpleDateFormat("MMM dd, yyyy", Locale.ENGLISH);
+        String finalDateStr = finalDateFormat.format(sourceDate);
+
+        mTvReleaseDate.setText(finalDateStr);
 
         mButtonTrailer.setOnClickListener(new View.OnClickListener() {
             @Override

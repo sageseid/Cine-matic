@@ -160,13 +160,13 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         switch (id) {
 
             case R.id.action_settings:
-
                 Intent Tr = new Intent(this, SettingsActivity.class);
-                startActivity(Tr);
+                startActivity(Tr); break;
             case R.id.action_favourite:
                 Intent Ir = new Intent(this, FavouriteActivity.class);
-                startActivity(Ir);
-
+                startActivity(Ir); break ;
+            default:
+                Log.e("", "no case");
                 return true;
         }
 
