@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.GridLayoutManager;
@@ -39,22 +40,42 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
 
     //Base Url for TMDB
-    private static final String API_BASE_URL = "http://api.themoviedb.org/3";
+        private static final String API_BASE_URL = "http://api.themoviedb.org/3";
     //Key to access TMDB
     private static final String API_KEY = "INSERT_API_KEY_HERE";
 
+    public static final String SAVE_ALL_MOVIES_LIST = "ALL_MOVIES_LIST";
+
+    public static final String SAVE_MOVIE_FILTER_SORT = "MOVIE_FILTER_SORT";
     private String SortOrder;
 
 
     RequestQueue queue;
     RecyclerView recyclerView;
-    List<MovieResponse> feedsList = new ArrayList<MovieResponse>();
+    List<MovieResponse> feedsList ;
+    //= new ArrayList<MovieResponse>();
     MovieRecyclerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_main);
+
+
+
+
+
+
+        if (savedInstanceState == null || !savedInstanceState.containsKey(SAVE_ALL_MOVIES_LIST) ) {
+            feedsList = new ArrayList<MovieResponse>();
+        } else {
+            feedsList = savedInstanceState.getParcelableArrayList(SAVE_ALL_MOVIES_LIST);
+        }
+
+
+
+
+
         recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         adapter = new MovieRecyclerAdapter(this, feedsList);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
@@ -66,8 +87,8 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
         Find_Order(sharedPreferences);
 
-        Uri.Builder builder = Uri.parse(API_BASE_URL).buildUpon();
-        builder.appendPath("movie").
+            Uri.Builder builder = Uri.parse(API_BASE_URL).buildUpon();
+            builder.appendPath("movie").
                 appendPath(SortOrder).
                 appendQueryParameter("api_key", API_KEY);
         String url = builder.build().toString();
@@ -172,6 +193,16 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (feedsList != null && !feedsList.isEmpty()) {
+            outState.putParcelableArrayList(SAVE_ALL_MOVIES_LIST, (ArrayList<MovieResponse>) feedsList);
+        }
+
     }
 
 }
