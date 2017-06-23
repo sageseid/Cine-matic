@@ -174,14 +174,4 @@ public class MovieResponse implements Parcelable {
     }
 
 
-    @Override
-    public String toString() {
-        return "Movie {posterPath: " + posterPath + ", adult: " + adult
-                + ", overview: " + overview + ", releaseDate: " + releaseDate + ", id: "
-                + id + ", originalTitle: " + originalTitle + ", originalLanguage: "
-                + originalLanguage + ", title: " + title + ", backdropPath: " + backdropPath
-                + ", popularity: " + popularity + ", voteCount: "
-                + voteCount + ", video: " + video
-                + ", voteAverage: " + voteAverage + "}";
-    }
 }

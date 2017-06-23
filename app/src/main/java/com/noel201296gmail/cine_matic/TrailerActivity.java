@@ -46,7 +46,7 @@ public class TrailerActivity extends AppCompatActivity {
     //Base Url for TMDB
     private static final String API_BASE_URL = "http://api.themoviedb.org/3";
     //Key to access TMDB
-    private static final String API_KEY = "INSERT_API_KEY_HERE";
+    private static final String API_KEY = "b7a6da7f6401f0bad741c3d311b15234";
     // Base Url for Youtube
     public static String BASE_URL_VIDEO = "https://www.youtube.com/watch?v=";
 

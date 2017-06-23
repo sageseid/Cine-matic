@@ -93,7 +93,7 @@ public class MovieContentProvider extends ContentProvider {
             // Query for the tasks directory
             case TASKS:
                 retCursor =  db.query(TABLE_NAME,
-                        projection,
+                        projection  ,
                         selection,
                         selectionArgs,
                         null,
