@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     //Base Url for TMDB
         private static final String API_BASE_URL = "http://api.themoviedb.org/3";
     //Key to access TMDB
-    private static final String API_KEY = "b7a6da7f6401f0bad741c3d311b15234";
+    private static final String API_KEY = "INSERT_API_KEY";
 
     public static final String SAVE_ALL_MOVIES_LIST = "ALL_MOVIES_LIST";
 
