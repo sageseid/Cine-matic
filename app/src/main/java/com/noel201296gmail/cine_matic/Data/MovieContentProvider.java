@@ -62,7 +62,8 @@ public class MovieContentProvider extends ContentProvider {
             case TASKS:
                 // Insert new values into the database
                 // Inserting values into tasks table
-                long id = db.insert(TABLE_NAME, null, values);
+                long id = db.insertWithOnConflict(TABLE_NAME,null,values,SQLiteDatabase.CONFLICT_REPLACE);
+               // long id = db.insert(TABLE_NAME, null, values);
                 if ( id > 0 ) {
                     returnUri = ContentUris.withAppendedId(MovieContract.MovieEntry.CONTENT_URI, id);
                 } else {

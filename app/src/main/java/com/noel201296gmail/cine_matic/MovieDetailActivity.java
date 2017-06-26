@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -61,7 +62,7 @@ public class MovieDetailActivity extends AppCompatActivity {
     //Base Url for TMDB
     private static final String API_BASE_URL = "http://api.themoviedb.org/3";
     //Key to access TMDB
-    private static final String API_KEY = "INSERT_API_KEY";
+    private static final String API_KEY = "b7a6da7f6401f0bad741c3d311b15234";
 
     List<ReviewResponse> ReviewList = new ArrayList<ReviewResponse>();
 
@@ -146,6 +147,7 @@ public class MovieDetailActivity extends AppCompatActivity {
                 // Create new empty ContentValues object
                 ContentValues contentValues = new ContentValues();
                 // Put the task description and selected mPriority into the ContentValues
+                contentValues.put(MovieContract.MovieEntry._ID, films.getId());
                 contentValues.put(MovieContract.MovieEntry.COLUMN_PIC, films.getPosterPath());
                 contentValues.put(MovieContract.MovieEntry.COLUMN_NAME, films.getTitle());
                 contentValues.put(MovieContract.MovieEntry.COLUMN_RATING, films.getVoteAverage().intValue());
