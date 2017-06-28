@@ -159,7 +159,7 @@ public class MovieDetailActivity extends AppCompatActivity {
                     Toast.makeText(getBaseContext(), uri.toString(), Toast.LENGTH_LONG).show();
                 }
                 // Finish activity (this returns back to MainActivity)
-                finish();
+               //    finish();
 
             }
         });

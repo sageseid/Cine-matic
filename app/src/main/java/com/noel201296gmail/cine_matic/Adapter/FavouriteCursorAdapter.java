@@ -26,6 +26,7 @@ public class FavouriteCursorAdapter extends RecyclerView.Adapter<FavouriteCursor
 
     private Cursor mCursor;
     private Context mContext ;
+    private List<MovieResponse> mMovieList ;
 
 
     public FavouriteCursorAdapter (Context context ){
@@ -48,10 +49,15 @@ public class FavouriteCursorAdapter extends RecyclerView.Adapter<FavouriteCursor
         mCursor.moveToPosition(position);
          String rating = String.valueOf(mCursor.getInt(idIndexRating));
         String description = mCursor.getString(descriptionIndex);
-
+         String pic = mCursor.getString(picIndex);
 
         holder.mTVTitle.setText(description);
         holder.mTVRating.setText(rating);
+
+        Picasso.with(mContext)
+                .load(pic)
+                .placeholder(R.color.colorAccent)
+                .into(holder. mIVThumbNail);
     }
 
     @Override
@@ -74,8 +80,9 @@ public class FavouriteCursorAdapter extends RecyclerView.Adapter<FavouriteCursor
             itemView.setOnClickListener(this);
             mTVTitle = (TextView) itemView.findViewById(R.id.tv_title);
             mTVRating = (TextView) itemView.findViewById(R.id.tv_rating);
-            mIVThumbNail = (ImageView) itemView.findViewById(R.id.iv_thumbnail);
+            mIVThumbNail = (ImageView) itemView.findViewById(R.id.iv_thumbnail_1);
             mCardView = (CardView) itemView.findViewById(R.id.card_view);
+
 
 
         }
@@ -83,6 +90,13 @@ public class FavouriteCursorAdapter extends RecyclerView.Adapter<FavouriteCursor
 
         @Override
         public void onClick(View v) {
+
+          //  int itemPosition = getAdapterPosition();
+           // MovieResponse movie = mMovieList.get(itemPosition);
+            //Intent MovieDetail = new Intent(mContext, MovieDetailActivity.class);
+            //MovieDetail.putExtra("Details",movie);
+            //mContext.startActivity(MovieDetail);
+
         }
     }
     public Cursor swapCursor(Cursor c) {

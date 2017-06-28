@@ -50,7 +50,7 @@ public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdap
             itemView.setOnClickListener(this);
             mTVTitle = (TextView) itemView.findViewById(R.id.tv_title);
             mTVRating = (TextView) itemView.findViewById(R.id.tv_rating);
-            mIVThumbNail = (ImageView) itemView.findViewById(R.id.iv_thumbnail);
+            mIVThumbNail = (ImageView) itemView.findViewById(R.id.iv_thumbnail_1);
             mCardView = (CardView) itemView.findViewById(R.id.card_view);
 
 
